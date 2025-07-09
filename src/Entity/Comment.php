@@ -27,6 +27,10 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +80,18 @@ class Comment
     public function setBook(?Book $book): static
     {
         $this->book = $book;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

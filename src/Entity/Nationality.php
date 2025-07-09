@@ -24,9 +24,16 @@ class Nationality
     #[ORM\OneToMany(targetEntity: Author::class, mappedBy: 'nationality')]
     private Collection $authors;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'nationality')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->authors = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,6 +77,36 @@ class Nationality
             // set the owning side to null (unless already changed)
             if ($author->getNationality() === $this) {
                 $author->setNationality(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setNationality($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getNationality() === $this) {
+                $user->setNationality(null);
             }
         }
 
