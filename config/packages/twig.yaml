@@ -1,6 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
 
+    globals:
+        categList: '@App\Service\AllCategories'
+
 when@test:
     twig:
         strict_variables: true
+

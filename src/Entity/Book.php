@@ -42,9 +42,19 @@ class Book
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'book', orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\Column]
+    private ?bool $isVisible = null;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'subscribedBooks')]
+    private Collection $subscribedUsers;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->subscribedUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +160,42 @@ class Book
                 $comment->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVisible(): ?bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setIsVisible(bool $isVisible): static
+    {
+        $this->isVisible = $isVisible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getSubscribedUsers(): Collection
+    {
+        return $this->subscribedUsers;
+    }
+
+    public function addSubscribedUser(User $subscribedUser): static
+    {
+        if (!$this->subscribedUsers->contains($subscribedUser)) {
+            $this->subscribedUsers->add($subscribedUser);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscribedUser(User $subscribedUser): static
+    {
+        $this->subscribedUsers->removeElement($subscribedUser);
 
         return $this;
     }

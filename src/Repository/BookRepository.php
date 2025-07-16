@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,37 @@ class BookRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
+    }
+
+    /**
+     * Retourne une liste de livres qui incluent la catégorie sélectionnée et dont le nom contient le string $title
+     * @param \App\Entity\Category $category
+     * @param string $name
+     * @return Book[]
+     */
+    public function findByNameAndCategory(?Category $category = null, string $title): array
+    {
+        if($category === null) {
+            $books = $this->createQueryBuilder('b')
+            ->andWhere('b.title like :title')
+            ->setParameter('title', '%'.$title.'%')
+            ->orderBy('b.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $books;
+        }
+
+        $books = $this->createQueryBuilder('b')
+            ->andWhere('b.category = :category')
+            ->andWhere('b.title like :title')
+            ->setParameter('category', $category)
+            ->setParameter('title', '%'.$title.'%')
+            ->orderBy('b.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $books;
     }
 
     //    /**

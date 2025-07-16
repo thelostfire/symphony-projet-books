@@ -1,3 +1,21 @@
 @import "tailwindcss";
 
+header {
+    height: 15vh;
+}
 
+main {
+    min-height: 75vh;
+}
+
+footer {
+    height: 10vh
+}
+
+form {
+    color: white;
+    select {
+        text-align: center;
+        background-color: #101828;
+    }
+}

@@ -57,12 +57,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\Column]
-    private ?bool $isVerified = false;
+    /**
+     * @var Collection<int, Book>
+     */
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'subscribedUsers')]
+    private Collection $subscribedBooks;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->subscribedBooks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -225,14 +229,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isVerified(): ?bool
+    /**
+     * @return Collection<int, Book>
+     */
+    public function getSubscribedBooks(): Collection
     {
-        return $this->isVerified;
+        return $this->subscribedBooks;
     }
 
-    public function setIsVerified(bool $isVerified): static
+    public function addSubscribedBook(Book $subscribedBook): static
     {
-        $this->isVerified = $isVerified;
+        if (!$this->subscribedBooks->contains($subscribedBook)) {
+            $this->subscribedBooks->add($subscribedBook);
+            $subscribedBook->addSubscribedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscribedBook(Book $subscribedBook): static
+    {
+        if ($this->subscribedBooks->removeElement($subscribedBook)) {
+            $subscribedBook->removeSubscribedUser($this);
+        }
 
         return $this;
     }
