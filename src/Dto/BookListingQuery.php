@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BookListingQuery {
     public function __construct(
         
-        public readonly ?int $categoryChoice = null,
+        public readonly ?int $categoryChoice,
         
         #[Assert\NotBlank]
         #[Assert\Length(max: 60)]

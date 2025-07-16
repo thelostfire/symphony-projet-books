@@ -19,10 +19,18 @@ class BookSearchController extends AbstractController
         CategoryRepository $categ
     ): Response
     {
-        $books = $repo->findByNameAndCategory(
-            $categ->find($query->categoryChoice),
+        if($query->categoryChoice === null) {
+            $books = $repo->findByNameAndCategory(
+            null,
             $query->search
-        );
+            );
+        } else {
+
+            $books = $repo->findByNameAndCategory(
+                $categ->find($query->categoryChoice),
+                $query->search
+            );
+        }
 
         return $this->render('book_search/index.html.twig', [
             'books' => $books,

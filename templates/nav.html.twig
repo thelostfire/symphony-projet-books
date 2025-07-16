@@ -21,7 +21,7 @@
             <form action="/search" method="get">
               <label for="categoryChoice">
                 <select name="categoryChoice" id="">
-                  <option>Veuillez sélectionner une catégorie</option>
+                  <option value="">Catégorie</option>
                   {% for category in categList.getCategories %}
                   <option value={{category.getId}}>{{category.getName}}</option>
                   {% endfor %}
