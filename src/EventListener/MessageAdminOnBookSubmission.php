@@ -12,24 +12,31 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 #[AsEntityListener(event: Events::postPersist, method: 'messageAdmin', entity: Book::class)]
+/**
+ * Classe chargée d'envoyoer un mail aux admins dès qu'un nouveau livre est soumis par un utilisateur
+ */
 class MessageAdminOnBookSubmission
 {
-    public function __construct(private MailerInterface $mailer) 
+    public function __construct(private MailerInterface $mailer, private UserRepository $repo) 
     {  
     }
-    public function messageAdmin(Book $book, PostPersistEventArgs $args, UserRepository $repo)
+    public function messageAdmin(Book $book, PostPersistEventArgs $args)
     {
-        // $email = (new Email())
-        //     ->from('autosend@bookstory.fr')
-        //     foreach()
-        //     ->to($user->getEmail())
-        //     ->subject('Inscription à un site de livres ! ( ͡° ͜ʖ ͡°)')
-        //     ->text('Nous confirmons que vous vous êtes bien inscrit à notre site de livres')
-        //     ->html('<p>Nous confirmons que vous vous êtes bien inscrit à notre site de livres</p>');
+        $admins = $this->repo->findAllAdmins();
+        $book = $args->getObject();
+        if(!$book instanceof Book) {
+            return;
+        }
+        foreach($admins as $admin) {
+            
+            $email = (new Email())
+                ->from('autosend@bookstory.fr')
+                ->to($admin->getEmail())
+                ->subject('Nouvelle soumission de livre')
+                ->text('Un utilisateur a proposé un nouveau livre :'.$book->getTitle())
+                ->html('<p>Un utilisateur a proposé un nouveau livre: '.$book->getTitle().'</p>');
 
-        //     $this->mailer->send($email);
-
-        //TODO : faire un foreach qui récupère les admins, pour ça faire une méthode dans le repo users, chercher comment récupérer les
-        //       admins (en lien avec le tableau de rôles qui est en json)
+            $this->mailer->send($email);
+        }
     }
-}
+} 

@@ -19,3 +19,12 @@ form {
         background-color: #101828;
     }
 }
+
+body {
+    main {
+        form {
+
+            color: black;
+        }
+    }
+}

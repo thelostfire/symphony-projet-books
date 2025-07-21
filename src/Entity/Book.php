@@ -36,11 +36,6 @@ class Book
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    /**
-     * @var Collection<int, Comment>
-     */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'book', orphanRemoval: true)]
-    private Collection $comments;
 
     #[ORM\Column]
     private ?bool $isVisible = null;
@@ -51,10 +46,16 @@ class Book
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'subscribedBooks')]
     private Collection $subscribedUsers;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'book', orphanRemoval: true)]
+    private Collection $reviews;
+
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
         $this->subscribedUsers = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,36 +135,6 @@ class Book
         return $this;
     }
 
-    /**
-     * @return Collection<int, Comment>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getBook() === $this) {
-                $comment->setBook(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function isVisible(): ?bool
     {
         return $this->isVisible;
@@ -196,6 +167,36 @@ class Book
     public function removeSubscribedUser(User $subscribedUser): static
     {
         $this->subscribedUsers->removeElement($subscribedUser);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getBook() === $this) {
+                $review->setBook(null);
+            }
+        }
 
         return $this;
     }

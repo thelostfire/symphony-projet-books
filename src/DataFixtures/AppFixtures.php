@@ -6,6 +6,7 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Category;
 use App\Entity\Nationality;
+use App\Entity\Review;
 use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,18 +21,19 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
-
-        // USERS
-
+        
+        $generator = \Faker\Factory::create();
+        $users = [];
         $regularUser = new User();
         $regularUser
             ->setEmail('peon@user.com')
             ->setName('ohheyboss')
             ->setSurname('jobsdone')
             ->setJoinDate(new DateTime('now'))
-            ->setPassword($this->hasher->hashPassword($regularUser, 'test'));
+            ->setPassword( 'test');
 
         $manager->persist($regularUser);
+        $users[] = $regularUser;
 
         $adminUser = new User();
         $adminUser
@@ -40,19 +42,31 @@ class AppFixtures extends Fixture
             ->setSurname('imdaboss')
             ->setJoinDate(new DateTime('now'))
             ->setRoles(['ROLE_ADMIN'])
-            ->setPassword($this->hasher->hashPassword($adminUser, 'test'));
+            ->setPassword( 'test');
 
         $manager->persist($adminUser);
+        $users[] = $adminUser;
 
-        // OTHERS
-
-        $generator = \Faker\Factory::create();
+        // Ici on utilise le populator de Faker, qui auto-génère les fixtures de manière intelligente.
+        // A noter qu'on est obligé de préciser les users lors de l'ajout d'entity Review, en effet le populator ne peut pas ..
+        // ..assigner intelligement des valeurs qu'il n'a pas créé lui-même
         $populator = new \Faker\ORM\Doctrine\Populator($generator, $manager);
         $populator->addEntity(Nationality::class, 8);
         $populator->addEntity(Category::class, 10);
         $populator->addEntity(Author::class, 20);
         $populator->addEntity(Book::class, 30);
+        $populator->addEntity(Review::class, 30, [
+            'commenter' => $generator->randomElement($users)
+        ]);
         $populator->execute();
+
+        
+        // for($i=0; $i<31; $i++)
+        // {
+        //     $review = new Review;
+        //     $review->setAuthor($generator->randomElement($users));
+        //     $review->setBook()
+        // }
 
         $manager->flush();
     }

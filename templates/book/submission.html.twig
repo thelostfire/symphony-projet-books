@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Submit{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+
+    {{ form_errors(submissionForm) }}
+
+    {{ form_start(submissionForm) }}
+        {{ form_row(submissionForm.title) }}
+        {{ form_row(submissionForm.cover) }}
+        {{ form_row(submissionForm.publicationYear) }}
+        {{ form_row(submissionForm.description) }}
+        {{ form_row(submissionForm.author) }}
+        {{ form_row(submissionForm.category) }}
+
+        <button type="submit" class="btn">Submit</button>
+    {{ form_end(submissionForm) }}
+{% endblock %}

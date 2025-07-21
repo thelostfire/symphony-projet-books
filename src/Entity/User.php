@@ -52,21 +52,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTime $birthdate = null;
 
     /**
-     * @var Collection<int, Comment>
-     */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $comments;
-
-    /**
      * @var Collection<int, Book>
      */
     #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'subscribedUsers')]
     private Collection $subscribedBooks;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'author')]
+    private Collection $reviews;
+
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
         $this->subscribedBooks = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -200,36 +200,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Comment>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getUser() === $this) {
-                $comment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Book>
      */
     public function getSubscribedBooks(): Collection
@@ -251,6 +221,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->subscribedBooks->removeElement($subscribedBook)) {
             $subscribedBook->removeSubscribedUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setCommenter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getCommenter() === $this) {
+                $review->setCommenter(null);
+            }
         }
 
         return $this;

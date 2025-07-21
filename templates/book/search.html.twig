@@ -4,7 +4,9 @@
     {% for book in books %}
         <li>
             <h3>{{ book.title }} by {{ book.author.name }}, {{ book.publicationYear }}</h3>
-            <p>{{ book.getDescription }}</p>
+            <p>{{ book.description }}</p>
+            <img src="/uploads/user/{{ book.cover }}" alt="failure">
+            <br>
         </li>
     {% endfor %}
 </ul>
