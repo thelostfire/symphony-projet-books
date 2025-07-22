@@ -2,6 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Author;
+use App\Entity\Book;
+use App\Entity\Category;
+use App\Entity\Nationality;
+use App\Entity\Review;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -22,7 +28,7 @@ class DashboardController extends AbstractDashboardController
         //
         // 1.2) Same example but using the "ugly URLs" that were used in previous EasyAdmin versions:
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        return $this->redirect($adminUrlGenerator->setController(AuthorCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
         
         // Option 2. You can make your dashboard redirect to different pages depending on the user
         //
@@ -44,7 +50,16 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Users', 'fa fa-user');
+        yield MenuItem::linkToCrud('Authors', 'fa fa-person-walking-with-cane', Author::class);
+        yield MenuItem::linkToCrud('Books', 'fa fa-book-open', Book::class);
+        yield MenuItem::linkToCrud('Reviews', 'fa fa-comment', Review::class);
+        yield MenuItem::linkToCrud('Nationalities', 'fa fa-flag', Nationality::class);
+        yield MenuItem::linkToCrud('Categories', 'fa fa-list', Category::class);
+
+
+
+
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }

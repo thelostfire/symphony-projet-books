@@ -20,7 +20,7 @@
         <li>
             <form action="/book/search" method="get">
               <label for="categoryChoice">
-                <select name="categoryChoice" id="">
+                <select name="categoryChoice" id="" class="bg-zinc-500">
                   <option value="">Catégorie</option>
                   {% for category in categList.getCategories %}
                   <option value={{category.id}}>{{category.name}}</option>
@@ -28,18 +28,18 @@
                 </select>
               </label>
               <label for="search">
-                <input type="text" name="search" placeholder="Rechercher">
+                <input type="text" name="search" placeholder="Rechercher" class="bg-zinc-500">
               </label>
-              <button>Rechercher</button>
+              <button class="bg-zinc-500 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded-full">Rechercher</button>
             </form>
         </li>
         {% if app.user %}
         <li>
-          <a href="/logout" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Se déconnecter</a>
+          <a href="/logout" class="font-medium text-stone-50 dark:text-stone-400 hover:underline">Se déconnecter</a>
         </li>
         {% else %}
         <li>
-          <a href="/login" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Se connecter</a>
+          <a href="/login" class="font-medium text-stone-50 dark:text-stone-400 hover:underline">Se connecter</a>
         </li>
         {% endif %}
       </ul>

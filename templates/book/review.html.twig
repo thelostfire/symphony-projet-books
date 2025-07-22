@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Submit{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+
+    {{ form_errors(reviewForm) }}
+
+    {{ form_start(reviewForm) }}
+        {{ form_row(reviewForm.rating) }}
+        {{ form_row(reviewForm.content) }}
+        <button type="submit" class="btn">Submit</button>
+    {{ form_end(reviewForm) }}
+{% endblock %}

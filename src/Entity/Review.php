@@ -89,6 +89,16 @@ class Review
         return $this->timestamp;
     }
 
+    public function getTimestampDate()
+    {
+        return $this->timestamp->format('d-m-Y');
+    }
+
+    public function getTimestampHour()
+    {
+        return $this->timestamp->format('H:i:s');
+    }
+
     public function setTimestamp(\DateTime $timestamp): static
     {
         $this->timestamp = $timestamp;

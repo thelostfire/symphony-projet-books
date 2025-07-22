@@ -2,29 +2,31 @@
 
 header {
     height: 15vh;
+    form {
+        color: white;
+        select {
+            border-radius: 5px;
+            text-align: center;
+        }
+        input {
+            border-radius: 5px;
+            color: white;
+        }
+    }
 }
 
 main {
     min-height: 75vh;
+    form {
+        background-color: darkgray;
+        input {
+            background-color: white;
+            border: 1px solid black;
+            margin: 2px 1px;
+        }
+    }
 }
 
 footer {
     height: 10vh
-}
-
-form {
-    color: white;
-    select {
-        text-align: center;
-        background-color: #101828;
-    }
-}
-
-body {
-    main {
-        form {
-
-            color: black;
-        }
-    }
 }

@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Dto\BookListingQuery;
 use App\Entity\Book;
+use App\Entity\Review;
 use App\Form\BookSubmissionFormType;
+use App\Form\ReviewFormType;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
+use App\Service\BookRating;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -28,6 +32,9 @@ final class BookController extends AbstractController
         ]);
     }
 
+    /**
+     * Méthode chargée de s'occuper du système de reccherche de livre dans la navbar
+     */
     #[Route('/search', name: 'app_book_search')]
     public function bookSearch(
         #[MapQueryString] BookListingQuery $query,
@@ -53,6 +60,9 @@ final class BookController extends AbstractController
         ]);
     }
 
+    /**
+     * Méthode chargée d'afficher le formulaire de soumission d'un nouveau livre
+     */
     #[Route('/submit', name: 'book_submission')]
     public function submit(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -88,11 +98,38 @@ final class BookController extends AbstractController
             'submissionForm' => $form
         ]);
     }
-    #[Route('/{id}', name: 'book_submission')]
-    public function show(Book $book): Response
+    /**
+     * Méthode chargée d'afficher un livre seul et ses commentaires
+     */
+    #[Route('/{id}', name: 'book_display')]
+    public function show(Book $book, BookRating $bookRating): Response
     {
+        $rating = $bookRating->getRating($book);
         return $this->render('book/show.html.twig', [
             'book' => $book,
+            'rating' => $rating,
+        ]);
+    }
+    #[Route('/{id}/review', name: 'book_reviewing')]
+    public function review(Book $book, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $review = new Review;
+        $form = $this->createForm(ReviewFormType::class, $review);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $review->setTimestamp(new DateTime());
+            $review->setCommenter($this->getUser());
+            $review->setBook($book);
+
+            $entityManager->persist($review);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('book_display', ['id'=>$book->getId()]);
+        }
+        return $this->render('book/review.html.twig', [
+            'reviewForm' => $form,
         ]);
     }
 }

@@ -17,10 +17,6 @@ class ReviewFormType extends AbstractType
         $builder
             ->add('rating')
             ->add('content')
-            ->add('commenter', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
         ;
     }
 
