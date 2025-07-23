@@ -17,6 +17,11 @@ header {
 
 main {
     min-height: 75vh;
+    .alert-success {
+        background-color: lightgreen;
+        max-width: 30%;
+        margin: 1rem 2rem;
+    }
     form {
         background-color: darkgray;
         input {

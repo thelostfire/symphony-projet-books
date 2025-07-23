@@ -3,13 +3,16 @@
     <article>
         <h2> {{ book.title }} </h2>
         <p>written by {{ book.author.name }} in {{ book.publicationYear }}</p>
+        <p>{{ book.description }}</p>
         <p>Rating : {{ rating }}</p>
+        <a href="/book/{{ book.id }}/review">Ajouter un review</a>
+        <a href="/book/{{ book.id }}/subscribe">S'abonner</a>
     </article>
     <div>
         {% for review in book.reviews %}
-            <div>
+            <div class ="comment">
                 <div>
-                    <p> {{ review.commenter.name }} </p>
+                    <p class="comment-details"> {{ review.commenter.name }} </p>
                     <p>Le {{ review.getTimestampDate }}, à {{ review.getTimestampHour }} </p>
                 </div>
                 <p> {{ review.content }} </p>

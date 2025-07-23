@@ -48,6 +48,18 @@ class BookRepository extends ServiceEntityRepository
         return $books;
     }
 
+    public function getLastSixBooks(): array
+    {
+        $books = $this->createQueryBuilder('b')
+            ->select('b')
+            ->orderBy('b.id', 'DESC')
+            ->setMaxResults(6)
+            ->getQuery()
+            ->getResult();
+
+        return $books;
+    }
+
     //    /**
     //     * @return Book[] Returns an array of Book objects
     //     */

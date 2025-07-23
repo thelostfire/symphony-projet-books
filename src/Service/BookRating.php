@@ -19,12 +19,18 @@ public function __construct(private float $i = 0, private float $rating = 0)
     {
         $reviews = $book->getReviews();
         $this->i = 0;
+        $this->rating = 0;
         foreach($reviews as $review)
         {
             $this->rating = $this->rating + floatval($review->getRating());
             $this->i ++;
         }
-        $this->rating = $this->rating / $this->i;
-        return number_format($this->rating, 2, '.', ' ');
+        
+        if($this->i != 0) {
+            
+            $this->rating = $this->rating / $this->i;
+            return number_format($this->rating, 2, '.', ' ');
+        }
+            return "n/a";
     }
 }

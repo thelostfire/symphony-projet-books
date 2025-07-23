@@ -17,7 +17,14 @@
             {{ include('nav.html.twig') }}
         {% endblock %}
     </header>
-    <main>
+    <main> 
+        {% for type, messages in app.flashes(['success', 'info', 'warning']) %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block body %}{% endblock %}
     </main>
 

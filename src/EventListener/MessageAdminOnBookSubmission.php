@@ -13,7 +13,7 @@ use Symfony\Component\Mime\Email;
 
 #[AsEntityListener(event: Events::postPersist, method: 'messageAdmin', entity: Book::class)]
 /**
- * Classe chargée d'envoyoer un mail aux admins dès qu'un nouveau livre est soumis par un utilisateur
+ * Classe chargée d'envoyer un mail aux admins dès qu'un nouveau livre est soumis par un utilisateur
  */
 class MessageAdminOnBookSubmission
 {

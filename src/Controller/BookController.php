@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Dto\BookListingQuery;
 use App\Entity\Book;
 use App\Entity\Review;
+use App\Entity\User;
 use App\Form\BookSubmissionFormType;
 use App\Form\ReviewFormType;
 use App\Repository\BookRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[Route('/book')]
@@ -91,6 +93,7 @@ final class BookController extends AbstractController
 
             $entityManager->persist($book);
             $entityManager->flush();
+            $this->addFlash('success', "Votre proposition de livre a bien été soumise, un administrateur se chargera de la valider.");
 
             return $this->redirectToRoute('app_index');
         }
@@ -126,10 +129,23 @@ final class BookController extends AbstractController
             $entityManager->persist($review);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre review a bien été enregistré, merci !');
+
             return $this->redirectToRoute('book_display', ['id'=>$book->getId()]);
         }
         return $this->render('book/review.html.twig', [
             'reviewForm' => $form,
         ]);
+    }
+    #[Route('/{id}/subscribe', 'book_subscribe')]
+    public function subscribe(#[CurrentUser] ?User $user, Book $book, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user->addSubscribedBook($book);
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous vous êtes bien abonné à '.$book->getTitle().' !');
+
+        return $this->redirectToRoute('book_display', ['id'=>$book->getId()]);
     }
 }

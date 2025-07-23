@@ -4,6 +4,27 @@
 
 {% block body %}
     
-    <h1 class='text-6xl text-center'>Welcome to a story about books</h1>
+    <h1 class='text-6xl text-center'>Bienvenue sur BookStory !</h1>
 
+    <h2>Jetez un coup d'oeil à nos dernier livres !</h2>
+
+    {% for book in books %}
+        <article>
+            <h3>{{ book.title }}</h3>
+            {% if book.cover == null %}
+                <img src="uploads/user/placeholder_book.jpg" alt="Couverture du livre">
+            {% else %}
+                <img src="uploads/user/{{ book.cover }}" alt="Couverture du livre">
+            {% endif %}
+            <div>
+                <p>{{ book.description }}</p>
+                <div>
+                    <p>Auteur: {{ book.author.name }}</p>
+                    <p>Date de parution: {{ book.publicationYear }}</p>
+                    <p>Note : {{ ratings[book.id] }}</p>
+                </div>
+            </div>
+        </article>
+        <br>
+    {% endfor %}
 {% endblock %}
