@@ -54,7 +54,9 @@ class AppFixtures extends Fixture
         $populator->addEntity(Nationality::class, 8);
         $populator->addEntity(Category::class, 10);
         $populator->addEntity(Author::class, 20);
-        $populator->addEntity(Book::class, 30);
+        $populator->addEntity(Book::class, 30, [
+            'cover' => null
+        ]);
         $populator->addEntity(Review::class, 30, [
             'commenter' => $generator->randomElement($users)
         ]);
