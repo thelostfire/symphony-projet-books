@@ -1,22 +1,27 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <article>
-        <h2> {{ book.title }} </h2>
+    <article class="book-solo">
+        <h2 class="text-5xl text-center mt-[3rem] mb-[2rem]"> {{ book.title }} </h2>
+        {% if book.cover == 'placeholder' %}
+            <img src="/uploads/user/placeholder_book.jpg" alt="Couverture du livre" class="book-cover">
+        {% else %}
+            <img src="/uploads/user/{{ book.cover }}" alt="Couverture du livre" class="book-cover">
+        {% endif %}
         <p>written by {{ book.author.name }} in {{ book.publicationYear }}</p>
         <p>{{ book.description }}</p>
-        <p>Rating : {{ rating }}</p>
+        <p>Note : {{ rating }}</p>
         <a href="/book/{{ book.id }}/review">Ajouter un review</a>
         <a href="/book/{{ book.id }}/subscribe">S'abonner</a>
     </article>
     <div>
         {% for review in book.reviews %}
             <div class ="comment">
-                <div>
-                    <p class="comment-details"> {{ review.commenter.name }} </p>
-                    <p>Le {{ review.getTimestampDate }}, à {{ review.getTimestampHour }} </p>
+                <div class="comment-details text-xs">
+                    <p class="comment-author"> {{ review.commenter.name }} </p>
+                    <p> {{ review.rating }} </p>
                 </div>
                 <p> {{ review.content }} </p>
-                <p> {{ review.rating }} </p>
+                <p class="text-xs text-right">Le {{ review.getTimestampDate }}, à {{ review.getTimestampHour }} </p>
             </div>
         {% endfor %}
     </div>

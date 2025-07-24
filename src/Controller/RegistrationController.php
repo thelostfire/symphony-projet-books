@@ -26,21 +26,18 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // /** @var string $plainPassword */
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
             $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassword($plainPassword);
             $user->setJoinDate(new DateTime('now'));
-
-            // encode the plain password
-            // $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash('success', 'Nous confirmons votre inscription, veuillez vous connecter pour profiter de nos services !');
 
-            // do anything else you need here, like send an email
+            // Email de confirmation d'inscription
             $email = (new Email())
             ->from('hello@example.com')
             ->to($user->getEmail())
@@ -57,9 +54,4 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
-    /*#[Route('/verify', name:'app_verify')]
-    public function verifyUserEmail(): Response
-    {
-        //TODO
-    }*/
 }

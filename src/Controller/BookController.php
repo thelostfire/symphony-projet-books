@@ -35,7 +35,7 @@ final class BookController extends AbstractController
     }
 
     /**
-     * Méthode chargée de s'occuper du système de reccherche de livre dans la navbar
+     * Méthode chargée de s'occuper du système de recherche de livre dans la navbar
      */
     #[Route('/search', name: 'app_book_search')]
     public function bookSearch(
@@ -137,6 +137,9 @@ final class BookController extends AbstractController
             'reviewForm' => $form,
         ]);
     }
+    /**
+     * Méthode qui permet de s'abonner à un livre depuis sa page.
+     */
     #[Route('/{id}/subscribe', 'book_subscribe')]
     public function subscribe(#[CurrentUser] ?User $user, Book $book, Request $request, EntityManagerInterface $entityManager): Response
     {

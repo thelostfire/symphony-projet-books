@@ -31,6 +31,6 @@ public function __construct(private float $i = 0, private float $rating = 0)
             $this->rating = $this->rating / $this->i;
             return number_format($this->rating, 2, '.', ' ');
         }
-            return "n/a";
+            return "-";
     }
 }

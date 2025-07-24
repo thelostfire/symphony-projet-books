@@ -13,7 +13,8 @@ use Symfony\Component\Mime\Email;
 
 #[AsEntityListener(event: Events::postPersist, method: 'messageAdmin', entity: Book::class)]
 /**
- * Classe chargée d'envoyer un mail aux admins dès qu'un nouveau livre est soumis par un utilisateur
+ * Classe chargée d'envoyer un mail aux admins dès qu'un nouveau livre est soumis.
+ * Idéalement faudrait le modifier pour que ça n'envoie le mail que quand c'est un utilisateur qui soumet (ici on reçoit les mails quand on load les fixtures).
  */
 class MessageAdminOnBookSubmission
 {

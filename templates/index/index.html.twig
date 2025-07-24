@@ -1,28 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    
-    <h1 class='text-6xl text-center'>Bienvenue sur BookStory !</h1>
+    <div class="hero-section">
+        <h1 class='text-6xl text-center pt-[6rem] pb-[6rem]'>Bienvenue sur BookStory !</h1>
+    </div>
 
-    <h2>Jetez un coup d'oeil à nos dernier livres !</h2>
+    <h2 class="text-5xl text-center mt-[3rem] mb-[2rem]">Jetez un coup d'oeil à nos derniers livres !</h2>
 
-    {% for book in books %}
-        <article>
-            <h3>{{ book.title }}</h3>
-            {% if book.cover == null %}
-                <img src="uploads/user/placeholder_book.jpg" alt="Couverture du livre">
-            {% else %}
-                <img src="uploads/user/{{ book.cover }}" alt="Couverture du livre">
-            {% endif %}
-            <div>
-                <p>{{ book.description }}</p>
+    <div class="book-container">
+        {% for book in books %}
+            <article>
+                <a href="/book/{{ book.id }}" class="hover:text-red-700">
+                    <h3 class="text-2xl">{{ book.title }}</h3>
+                </a> 
+                {% if book.cover == 'placeholder' %}
+                    <img src="uploads/user/placeholder_book.jpg" alt="Couverture du livre" class="book-index-cover">
+                {% else %}
+                    <img src="uploads/user/{{ book.cover }}" alt="Couverture du livre" class="book-index-cover">
+                {% endif %}
                 <div>
-                    <p>Auteur: {{ book.author.name }}</p>
-                    <p>Date de parution: {{ book.publicationYear }}</p>
-                    <p>Note : {{ ratings[book.id] }}</p>
+                    <p>{{ book.description }}</p>
+                    <div class="book-details text-xs">
+                        <p>Auteur: {{ book.author.name }}</p>
+                        <p>Année de parution: {{ book.publicationYear }}</p>
+                    </div>
+                    <div class="text-left">
+                        <p> <i class="fa-regular fa-star"></i> {{ ratings[book.id] }}</p>
+                    </div>
                 </div>
-            </div>
-        </article>
-        <br>
-    {% endfor %}
+            </article>
+            <br>
+        {% endfor %}
+    </div>
 {% endblock %}
