@@ -1,6 +1,6 @@
 # Projet Symfony Evaluation
 
-Projet qui constitue l'évaluation des compétences aquises lors du cours de symfony dans la formation HumanBooster DWWM11.
+Projet qui constitue l'évaluation des compétences acquises lors du cours de symfony dans la formation HumanBooster DWWM11.
 
 C'est dans l'idée un site de livres où on peut chercher, consulter, ajouter, et commenter (reviews) des livres.
 
