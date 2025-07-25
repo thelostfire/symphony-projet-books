@@ -77,6 +77,11 @@ main {
             max-width: 650px;
             max-height: 800px;
         }
+        .solo-book-rating-author {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 2rem;
+        }
     }
     .comment {
         width: 60%;
@@ -88,6 +93,44 @@ main {
             justify-content: space-between;
             margin: 2px 4px;
         }
+    }
+    .book-links {
+        display: flex;
+        justify-content: space-around;
+        margin: 1rem;
+        a {
+            background-color: lightgray;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 2px 3px;
+        }
+        a:hover {
+            background-color: white;
+        }
+    }
+    .book-container-search {
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        flex-wrap: wrap;
+
+        .book-search-article {
+            padding: 4px;
+            background-color: khaki;
+            border-radius: 5px;
+            border: 2px solid brown;
+            width: 25%;
+            margin: 1rem 1rem;
+            article {
+                padding: 1rem;
+            }
+        }
+    }
+    form {
+        margin: auto;
+        width: 50%;
+        padding: 2rem;
     }
 }
 

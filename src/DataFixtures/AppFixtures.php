@@ -90,7 +90,7 @@ class AppFixtures extends Fixture
                 ->setCategory($generator->randomElement($categories))
                 ->setAuthor($generator->randomElement($authors))
                 ->setCover('placeholder')
-                ->setIsVisible(false)
+                ->setIsVisible(true)
                 ->setPublicationYear(random_int(0, 2025));
             $manager->persist($book);
             $books[] = $book;

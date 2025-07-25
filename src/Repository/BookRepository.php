@@ -52,6 +52,7 @@ class BookRepository extends ServiceEntityRepository
     {
         $books = $this->createQueryBuilder('b')
             ->select('b')
+            ->andWhere('b.isVisible = 1')
             ->orderBy('b.id', 'DESC')
             ->setMaxResults(6)
             ->getQuery()

@@ -7,18 +7,22 @@
         {% else %}
             <img src="/uploads/user/{{ book.cover }}" alt="Couverture du livre" class="book-cover">
         {% endif %}
-        <p>written by {{ book.author.name }} in {{ book.publicationYear }}</p>
         <p>{{ book.description }}</p>
-        <p>Note : {{ rating }}</p>
-        <a href="/book/{{ book.id }}/review">Ajouter un review</a>
-        <a href="/book/{{ book.id }}/subscribe">S'abonner</a>
+        <div class="solo-book-rating-author">
+            <p>written by {{ book.author.name }} in {{ book.publicationYear }}</p>
+            <p><i class="fa-regular fa-star"></i> {{ rating }}</p>
+        </div>
+        <div class='book-links'>
+            <a href="/book/{{ book.id }}/review">Ajouter un review</a>
+            <a href="/book/{{ book.id }}/subscribe">S'abonner</a>
+        </div>
     </article>
     <div>
         {% for review in book.reviews %}
             <div class ="comment">
                 <div class="comment-details text-xs">
                     <p class="comment-author"> {{ review.commenter.name }} </p>
-                    <p> {{ review.rating }} </p>
+                    <p> <i class="fa-solid fa-star" style ="color: gold"></i> {{ review.rating }} </p>
                 </div>
                 <p> {{ review.content }} </p>
                 <p class="text-xs text-right">Le {{ review.getTimestampDate }}, à {{ review.getTimestampHour }} </p>
